@@ -28,7 +28,18 @@
     "type": "git",
     "url": "git+https://github.com/higayasuo/expo-icp-app-connect.git"
   },
-  "keywords": [],
+  "keywords": [
+    "expo",
+    "react",
+    "hook",
+    "deep link",
+    "internet computer",
+    "icp",
+    "app connect",
+    "authentication",
+    "library",
+    "typescript"
+  ],
   "author": "Yasuo Higa",
   "license": "MIT",
   "bugs": {
