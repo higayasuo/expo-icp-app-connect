@@ -1,0 +1,58 @@
+{
+  "name": "expo-icp-app-connect",
+  "version": "0.1.0",
+  "description": "This project provides hooks for invoking another application from the frontend and receiving result via deep link in Internet Computer (ICP) applications.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "test": "vitest --run",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "prepare": "npm test && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/higayasuo/expo-icp-app-connect.git"
+  },
+  "keywords": [],
+  "author": "Yasuo Higa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/higayasuo/expo-icp-app-connect/issues"
+  },
+  "homepage": "https://github.com/higayasuo/expo-icp-app-connect#readme",
+  "peerDependencies": {
+    "expo-crypto-universal": "^0.2.7",
+    "expo-icp-app-connect-helpers": "^0.1.2",
+    "expo-icp-frontend-helpers": "^0.1.12",
+    "expo-linking": "*",
+    "expo-router": "*",
+    "expo-storage-universal": "^0.3.4",
+    "expo-web-browser": "*",
+    "react": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.28",
+    "@types/react": "~19.0.10",
+    "@vitest/coverage-v8": "^1.4.0",
+    "jsdom": "^26.0.0",
+    "typescript": "~5.8.3",
+    "vite": "^5.1.6",
+    "vite-plugin-dts": "^3.7.3",
+    "vitest": "^1.4.0"
+  }
+}
