@@ -6,18 +6,18 @@ import { DeepLinkConnectionParams } from 'expo-icp-app-connect-helpers';
 
 /**
  * Parameters required to connect to an app.
- * @template P - The type of parameters that extends DeepLinkConnectionParams.
+ * @template C - The type of connection parameters that extends DeepLinkConnectionParams.
  */
-type ConnectToAppParams<P extends DeepLinkConnectionParams> = {
+type ConnectToAppParams<C extends DeepLinkConnectionParams> = {
   /**
    * The URL of the app to connect to.
    */
   url: string;
   /**
    * The parameters to include in the connection.
-   * Will be extended with a session ID.
+   * Will be extended with a session ID and a deep link type.
    */
-  params: P;
+  params: C;
   /**
    * The path to redirect to after connecting to the app.
    * If undefined, any existing redirect path will be removed.
@@ -47,10 +47,10 @@ type ConnectToAppParams<P extends DeepLinkConnectionParams> = {
  * 4. Constructs the app URL with all necessary parameters
  * 5. Opens the app in a browser
  *
- * @template P - The type of parameters that extends DeepLinkConnectionParams.
- * @param {ConnectToAppParams<P>} params - The parameters required to connect to the app.
+ * @template C - The type of connection parameters that extends DeepLinkConnectionParams.
+ * @param {ConnectToAppParams<C>} params - The parameters required to connect to the app.
  * @param {string} params.url - The URL of the app to connect to.
- * @param {P} params.params - The parameters to include in the connection.
+ * @param {C} params.params - The parameters to include in the connection.
  * @param {string | undefined} params.redirectPath - The path to redirect to after connecting.
  * @param {StringValueStorageWrapper} params.redirectPathStorage - Storage for the redirect path.
  * @param {StringValueStorageWrapper} params.sessionIdStorage - Storage for the session ID.
@@ -58,26 +58,15 @@ type ConnectToAppParams<P extends DeepLinkConnectionParams> = {
  * @returns {Promise<string>} A promise that resolves to the generated session ID.
  * @throws {Error} If any of the operations (saving, generating session ID, opening browser) fail.
  *
- * @example
- * ```typescript
- * const sessionId = await connectToApp({
- *   url: 'https://example.com',
- *   params: { deepLinkType: 'test' },
- *   redirectPath: '/dashboard',
- *   redirectPathStorage: storage,
- *   sessionIdStorage: sessionStorage,
- *   cryptoModule: crypto
- * });
- * ```
  */
-export const connectToApp = async <P extends DeepLinkConnectionParams>({
+export const connectToApp = async <C extends DeepLinkConnectionParams>({
   url,
   params,
   redirectPath,
   redirectPathStorage,
   sessionIdStorage,
   cryptoModule,
-}: ConnectToAppParams<P>): Promise<string> => {
+}: ConnectToAppParams<C>): Promise<string> => {
   try {
     if (redirectPath) {
       await redirectPathStorage.save(redirectPath);

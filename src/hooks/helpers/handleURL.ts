@@ -4,9 +4,9 @@ import { ParamsWithSessionId } from 'expo-icp-app-connect-helpers';
 
 /**
  * Parameters for the handleURL function.
- * @template H - The type of hash parameters.
+ * @template R - The type of result parameters.
  */
-type HandleURLParams<H extends ParamsWithSessionId> = {
+type HandleURLParams<R extends ParamsWithSessionId> = {
   /**
    * The URL to parse.
    */
@@ -17,9 +17,9 @@ type HandleURLParams<H extends ParamsWithSessionId> = {
   sessionIdStorage: StringValueStorageWrapper;
   /**
    * Callback for successful parsing of URL.
-   * @param hashParams - The parsed hash parameters.
+   * @param resultParams - The parsed hash parameters.
    */
-  onSuccess: (hashParams: H) => void;
+  onSuccess: (resultParams: R) => void;
   /**
    * Callback for errors during URL handling.
    * @param error - The error that occurred.
@@ -31,22 +31,22 @@ type HandleURLParams<H extends ParamsWithSessionId> = {
 
 /**
  * Handles a URL by parsing its hash parameters and verifying the session ID.
- * @template H - The type of hash parameters.
+ * @template R - The type of result parameters.
  * @param params - The parameters for handling the URL.
  * @returns A promise that resolves when the URL has been handled.
  */
-export const handleURL = async <H extends ParamsWithSessionId>({
+export const handleURL = async <R extends ParamsWithSessionId>({
   url,
   sessionIdStorage,
   onSuccess,
   onError,
   onFinally,
-}: HandleURLParams<H>): Promise<void> => {
+}: HandleURLParams<R>): Promise<void> => {
   try {
-    const hashParams = parseParams<H>(new URL(url).hash);
+    const resultParams = parseParams<R>(new URL(url).hash);
     const sessionId = await sessionIdStorage.find();
 
-    if (Object.keys(hashParams).length === 0) {
+    if (Object.keys(resultParams).length === 0) {
       return;
     }
 
@@ -55,18 +55,18 @@ export const handleURL = async <H extends ParamsWithSessionId>({
       return;
     }
 
-    if (sessionId !== hashParams.sessionId) {
+    if (sessionId !== resultParams.sessionId) {
       console.log(
         'sessionId',
         sessionId,
-        'hashParams.sessionId',
-        hashParams.sessionId,
+        'resultParams.sessionId',
+        resultParams.sessionId,
       );
       console.warn('Session ID mismatch');
       return;
     }
 
-    onSuccess(hashParams);
+    onSuccess(resultParams);
   } catch (error) {
     console.error('Failed to handle URL:', error);
     onError(error);
