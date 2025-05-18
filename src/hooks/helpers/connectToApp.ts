@@ -8,7 +8,7 @@ import { DeepLinkConnectionParams } from 'expo-icp-app-connect-helpers';
  * Parameters required to connect to an app.
  * @template C - The type of connection parameters that extends DeepLinkConnectionParams.
  */
-type ConnectToAppParams<C extends DeepLinkConnectionParams> = {
+export type ConnectToAppParams<C extends DeepLinkConnectionParams> = {
   /**
    * The URL of the app to connect to.
    */

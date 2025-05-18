@@ -22,7 +22,7 @@
     "test": "vitest --run",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "prepare": "npm test && npm run build"
+    "prepublishOnly": "npm test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -48,8 +48,8 @@
   "homepage": "https://github.com/higayasuo/expo-icp-app-connect#readme",
   "peerDependencies": {
     "expo-crypto-universal": "^0.2.7",
-    "expo-icp-app-connect-helpers": "^0.1.2",
-    "expo-icp-frontend-helpers": "^0.1.12",
+    "expo-icp-app-connect-helpers": "^0.1.5",
+    "expo-icp-frontend-helpers": "^0.1.13",
     "expo-linking": "*",
     "expo-router": "*",
     "expo-storage-universal": "^0.3.4",

@@ -30,8 +30,9 @@ const {
   appConnectError,
   clearAppConnectError,
   connectToApp,
+  buildAppConnectionParams,
 } = useAppConnect<MyConnectionParams, MyResultParams>({
-  namespace: 'myApp',
+  pathname: '/myApp',
   regularStorage,
   cryptoModule,
 });
@@ -41,9 +42,10 @@ const {
 - `appConnectError`: Any error encountered during the connection process.
 - `clearAppConnectError()`: Clears the current error.
 - `connectToApp({ url, params, redirectPath })`: Initiates a connection to another app. Returns a Promise resolving to the session ID.
+- `buildAppConnectionParams(params)`: Builds connection parameters with the current pathname. Returns the connection parameters of type `YourConnectionParams`.
 
 #### Parameters
-- `namespace: string` – The namespace of the target application (used for storage keys).
+- `pathname: string` – The pathname of the page to redirect to (used for storage keys).
 - `regularStorage: Storage` – Storage instance for session and redirect path.
 - `cryptoModule: CryptoModule` – Crypto module for generating secure session IDs.
 
@@ -112,9 +114,19 @@ await handleURL({
 ---
 
 ### `openBrowser`
-Opens a browser window with the specified URL.
+Opens a browser window with the specified URL. In web environments, supports opening in a new tab.
 
 ```ts
 import { openBrowser } from 'expo-icp-app-connect';
+
+// Open in current window/tab
 await openBrowser('https://target.app');
+
+// Open in new tab (web only)
+await openBrowser('https://target.app', { inNewTab: true });
 ```
+
+#### Parameters
+- `url: string` – The URL to open in the browser.
+- `options: OpenBrowserOptions` – Optional configuration.
+  - `inNewTab?: boolean` – Whether to open in a new tab (web environments only).

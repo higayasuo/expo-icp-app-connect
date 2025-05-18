@@ -6,16 +6,16 @@ import { handleURL } from './helpers/handleURL';
 import { Storage, StringValueStorageWrapper } from 'expo-storage-universal';
 import { dismissBrowser } from './helpers/dismissBrowser';
 import { CryptoModule } from 'expo-crypto-universal';
-import { connectToApp } from './helpers/connectToApp';
-import { DeepLinkConnectionParams, ParamsWithSessionId } from 'expo-icp-app-connect-helpers';
+import { connectToApp, ConnectToAppParams } from './helpers/connectToApp';
+import { buildAppConnectionParams, BuildAppConnectionParamsParams, DeepLinkConnectionParams, ParamsWithSessionId } from 'expo-icp-app-connect-helpers';
 /**
  * Parameters for the useIIIntegration hook.
  */
 type UseAppConnectParams = {
   /**
-   * The namespace of the target application.
+   * The pathname of the page to redirect to.
    */
-  namespace: string;
+  pathname: string;
   /**
    * The regular storage.
    */
@@ -26,21 +26,16 @@ type UseAppConnectParams = {
   cryptoModule: CryptoModule;
 };
 
-type ConnectToAppOuterParams<C extends DeepLinkConnectionParams> = {
-  url: string;
-  params: C;
-  redirectPath: string | undefined;
-};
-
 type UseAppConnectResult<C extends DeepLinkConnectionParams, R extends ParamsWithSessionId> = {
+  buildAppConnectionParams: (params: Omit<BuildAppConnectionParamsParams, 'pathname'>) => C;
   appConnectResultParams: R | undefined;
   appConnectError: unknown | undefined;
   clearAppConnectError: () => void;
-  connectToApp: (outerParams: ConnectToAppOuterParams<C>) => Promise<string>;
+  connectToApp: (params: Omit<ConnectToAppParams<C>, 'redirectPathStorage' | 'sessionIdStorage' | 'cryptoModule'>) => Promise<string>;
 };
 
 export const useAppConnect = <C extends DeepLinkConnectionParams, R extends ParamsWithSessionId>({
-  namespace,
+  pathname,
   regularStorage,
   cryptoModule,
 }: UseAppConnectParams): UseAppConnectResult<C, R> => {
@@ -51,7 +46,8 @@ export const useAppConnect = <C extends DeepLinkConnectionParams, R extends Para
   const router = useRouter();
   const [appConnectResultParams, setAppConnectResultParams] = useState<
     R | undefined
-  >(undefined);
+    >(undefined);
+  const namespace = pathname.replace(/\//g, '_');
 
   const sessionIdStorage = new StringValueStorageWrapper(
     regularStorage,
@@ -90,11 +86,14 @@ export const useAppConnect = <C extends DeepLinkConnectionParams, R extends Para
 
   return {
     appConnectResultParams,
-    connectToApp: ({ url, params, redirectPath }: ConnectToAppOuterParams<C>) =>
+    buildAppConnectionParams: (params) =>
+      buildAppConnectionParams({
+        ...params,
+        pathname,
+      }),
+    connectToApp: (params) =>
       connectToApp({
-        url,
-        params,
-        redirectPath,
+        ...params,
         redirectPathStorage,
         sessionIdStorage,
         cryptoModule,
