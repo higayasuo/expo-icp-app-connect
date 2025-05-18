@@ -20,7 +20,7 @@ vi.mock('expo-icp-frontend-helpers', () => ({
 describe('connectToApp', () => {
   const mockUrl = 'https://example.com';
   const mockSessionId = '010203';
-  const mockParams: DeepLinkConnectionParams = { deepLinkType: 'icp' };
+  const mockParams: DeepLinkConnectionParams = { deepLinkType: 'icp', pathname: '/test' };
   const mockRedirectPath = '/test';
 
   const mockCryptoModule = {
@@ -72,7 +72,7 @@ describe('connectToApp', () => {
       sessionId: mockSessionId,
     });
     expect(openBrowser).toHaveBeenCalledWith(
-      `${mockUrl}/?deep-link-type=icp&session-id=010203`,
+      `${mockUrl}/?deep-link-type=icp&pathname=%2Ftest&session-id=010203`,
     );
     expect(result).toBe(mockSessionId);
   });
