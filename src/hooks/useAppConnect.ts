@@ -64,7 +64,7 @@ export const useAppConnect = <C extends DeepLinkConnectionParams, R extends Para
     }
 
     handleURL<R>({
-      url,
+      url: new URL(url),
       sessionIdStorage,
       onSuccess: async (params: R) => {
         setAppConnectResultParams(params);
