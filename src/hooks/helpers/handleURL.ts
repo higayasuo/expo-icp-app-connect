@@ -10,7 +10,7 @@ type HandleURLParams<R extends ParamsWithSessionId> = {
   /**
    * The URL to parse.
    */
-  url: string;
+  url: URL;
   /**
    * The storage for session IDs.
    */
@@ -43,7 +43,7 @@ export const handleURL = async <R extends ParamsWithSessionId>({
   onFinally,
 }: HandleURLParams<R>): Promise<void> => {
   try {
-    const resultParams = parseParams<R>(new URL(url).hash);
+    const resultParams = parseParams<R>(url.hash);
     const sessionId = await sessionIdStorage.find();
 
     if (Object.keys(resultParams).length === 0) {

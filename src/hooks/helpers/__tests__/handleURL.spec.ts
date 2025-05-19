@@ -11,6 +11,7 @@ describe('handleURL', () => {
   const mockSessionId = 'test-session-id';
   const mockHashParams = { sessionId: mockSessionId };
   const mockError = new Error('Parse error');
+  const mockUrl = new URL('https://example.com#test');
 
   const mockSessionIdStorage = {
     find: vi.fn(),
@@ -29,7 +30,7 @@ describe('handleURL', () => {
     vi.mocked(mockSessionIdStorage.find).mockResolvedValue(mockSessionId);
 
     await handleURL({
-      url: 'https://example.com#test',
+      url: mockUrl,
       sessionIdStorage: mockSessionIdStorage,
       onSuccess: mockOnSuccess,
       onError: mockOnError,
@@ -48,7 +49,7 @@ describe('handleURL', () => {
     vi.mocked(mockSessionIdStorage.find).mockResolvedValue(undefined);
 
     await handleURL({
-      url: 'https://example.com#test',
+      url: mockUrl,
       sessionIdStorage: mockSessionIdStorage,
       onSuccess: mockOnSuccess,
       onError: mockOnError,
@@ -65,7 +66,7 @@ describe('handleURL', () => {
     vi.mocked(mockSessionIdStorage.find).mockResolvedValue(mockSessionId);
 
     await handleURL({
-      url: 'https://example.com#test',
+      url: mockUrl,
       sessionIdStorage: mockSessionIdStorage,
       onSuccess: mockOnSuccess,
       onError: mockOnError,
@@ -83,7 +84,7 @@ describe('handleURL', () => {
     });
 
     await handleURL({
-      url: 'https://example.com#test',
+      url: mockUrl,
       sessionIdStorage: mockSessionIdStorage,
       onSuccess: mockOnSuccess,
       onError: mockOnError,
@@ -103,7 +104,7 @@ describe('handleURL', () => {
     });
 
     await handleURL({
-      url: 'https://example.com#test',
+      url: mockUrl,
       sessionIdStorage: mockSessionIdStorage,
       onSuccess: mockOnSuccess,
       onError: mockOnError,

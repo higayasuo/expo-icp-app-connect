@@ -12,7 +12,7 @@ export type ConnectToAppParams<C extends DeepLinkConnectionParams> = {
   /**
    * The URL of the app to connect to.
    */
-  url: string;
+  url: URL;
   /**
    * The parameters to include in the connection.
    * Will be extended with a session ID and a deep link type.

@@ -58,7 +58,7 @@ Establishes a secure session and opens the target app in a browser with the requ
 import { connectToApp } from 'expo-icp-app-connect';
 
 await connectToApp<MyConnectionParams>({
-  url: 'https://target.app',
+  url: new URL('https://target.app'),
   params: { ... },
   redirectPath: '/return',
   redirectPathStorage,
@@ -68,7 +68,7 @@ await connectToApp<MyConnectionParams>({
 ```
 
 #### Parameters
-- `url: string` – The URL of the app to connect to.
+- `url: URL` – The URL of the app to connect to.
 - `params: DeepLinkConnectionParams` – Parameters to include in the connection (will be extended with a session ID and deep link type).
 - `redirectPath: string | undefined` – Path to redirect to after connecting.
 - `redirectPathStorage: StringValueStorageWrapper` – Storage for the redirect path.
@@ -96,7 +96,7 @@ Parses a URL, verifies the session ID, and invokes callbacks for success or erro
 import { handleURL } from 'expo-icp-app-connect';
 
 await handleURL({
-  url,
+  url: new URL('https://example.com#test'),
   sessionIdStorage,
   onSuccess: (params) => { /* handle params */ },
   onError: (error) => { /* handle error */ },
@@ -105,7 +105,7 @@ await handleURL({
 ```
 
 #### Parameters
-- `url: string` – The URL to parse.
+- `url: URL` – The URL to parse.
 - `sessionIdStorage: StringValueStorageWrapper` – Storage for the session ID.
 - `onSuccess: (params) => void` – Callback for successful parsing and session verification.
 - `onError: (error) => void` – Callback for errors.
