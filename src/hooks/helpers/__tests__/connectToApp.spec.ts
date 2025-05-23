@@ -5,6 +5,7 @@ import { openBrowser } from '../openBrowser';
 import { CryptoModule } from 'expo-crypto-universal';
 import { StringValueStorageWrapper } from 'expo-storage-universal';
 import { DeepLinkConnectionParams } from 'expo-icp-app-connect-helpers';
+import { OpenBrowserOptions } from '../openBrowser';
 
 vi.mock('../openBrowser', () => ({
   openBrowser: vi.fn().mockResolvedValue(undefined),
@@ -73,6 +74,7 @@ describe('connectToApp', () => {
     });
     expect(openBrowser).toHaveBeenCalledWith(
       `${mockUrl.toString()}?deep-link-type=icp&pathname=%2Ftest&session-id=010203`,
+      {},
     );
     expect(result).toBe(mockSessionId);
   });
@@ -142,5 +144,42 @@ describe('connectToApp', () => {
 
     expect(mockRedirectPathStorage.remove).toHaveBeenCalled();
     expect(mockRedirectPathStorage.save).not.toHaveBeenCalled();
+  });
+
+  it('should pass openBrowserOptions to openBrowser function', async () => {
+    const mockOpenBrowserOptions: OpenBrowserOptions = {
+      inNewTab: true,
+    };
+
+    await connectToApp({
+      url: mockUrl,
+      params: mockParams,
+      redirectPath: mockRedirectPath,
+      redirectPathStorage: mockRedirectPathStorage,
+      sessionIdStorage: mockSessionIdStorage,
+      cryptoModule: mockCryptoModule,
+      openBrowserOptions: mockOpenBrowserOptions,
+    });
+
+    expect(openBrowser).toHaveBeenCalledWith(
+      `${mockUrl.toString()}?deep-link-type=icp&pathname=%2Ftest&session-id=010203`,
+      mockOpenBrowserOptions,
+    );
+  });
+
+  it('should use default empty object for openBrowserOptions when not provided', async () => {
+    await connectToApp({
+      url: mockUrl,
+      params: mockParams,
+      redirectPath: mockRedirectPath,
+      redirectPathStorage: mockRedirectPathStorage,
+      sessionIdStorage: mockSessionIdStorage,
+      cryptoModule: mockCryptoModule,
+    });
+
+    expect(openBrowser).toHaveBeenCalledWith(
+      `${mockUrl.toString()}?deep-link-type=icp&pathname=%2Ftest&session-id=010203`,
+      {},
+    );
   });
 });

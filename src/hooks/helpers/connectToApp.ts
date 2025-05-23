@@ -1,7 +1,7 @@
 import { toHex, updateParams } from 'expo-icp-frontend-helpers';
 import { CryptoModule } from 'expo-crypto-universal';
 import { StringValueStorageWrapper } from 'expo-storage-universal';
-import { openBrowser } from './openBrowser';
+import { openBrowser, OpenBrowserOptions } from './openBrowser';
 import { DeepLinkConnectionParams } from 'expo-icp-app-connect-helpers';
 
 /**
@@ -35,6 +35,10 @@ export type ConnectToAppParams<C extends DeepLinkConnectionParams> = {
    * The crypto module used for generating a secure random session ID.
    */
   cryptoModule: CryptoModule;
+  /**
+   * The options for opening the browser.
+   */
+  openBrowserOptions?: OpenBrowserOptions;
 };
 
 /**
@@ -66,6 +70,7 @@ export const connectToApp = async <C extends DeepLinkConnectionParams>({
   redirectPathStorage,
   sessionIdStorage,
   cryptoModule,
+  openBrowserOptions = {},
 }: ConnectToAppParams<C>): Promise<string> => {
   try {
     if (redirectPath) {
@@ -80,7 +85,7 @@ export const connectToApp = async <C extends DeepLinkConnectionParams>({
     const appUrl = new URL(url);
     updateParams(appUrl.searchParams, params);
 
-    await openBrowser(appUrl.toString());
+    await openBrowser(appUrl.toString(), openBrowserOptions);
 
     return sessionId;
   } catch (error) {

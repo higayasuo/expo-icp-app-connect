@@ -5,7 +5,7 @@ import { isWeb } from 'expo-crypto-universal';
  * Options for opening a browser.
  * @property {boolean} [inNewTab] - Whether to open the browser in a new tab.
  */
-type OpenBrowserOptions = {
+export type OpenBrowserOptions = {
   inNewTab?: boolean;
 };
 

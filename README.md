@@ -64,6 +64,7 @@ await connectToApp<MyConnectionParams>({
   redirectPathStorage,
   sessionIdStorage,
   cryptoModule,
+  openBrowserOptions: { inNewTab: true },
 });
 ```
 
@@ -74,6 +75,8 @@ await connectToApp<MyConnectionParams>({
 - `redirectPathStorage: StringValueStorageWrapper` – Storage for the redirect path.
 - `sessionIdStorage: StringValueStorageWrapper` – Storage for the session ID.
 - `cryptoModule: CryptoModule` – Crypto module for generating the session ID.
+- `openBrowserOptions?: OpenBrowserOptions` – Optional configuration for opening the browser.
+  - `inNewTab?: boolean` – Whether to open in a new tab (web environments only).
 
 Returns a Promise resolving to the generated session ID.
 
